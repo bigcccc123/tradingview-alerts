@@ -42,8 +42,8 @@ class Menu {
 		add_menu_page( esc_attr__( 'Tradingview Alerts', 'tradingview_alerts' ), esc_attr__( 'Tradingview Alerts', 'tradingview_alerts' ), $capability, $slug, array( $this, 'plugin_page' ), 'dashicons-filter', $menu_position );
 
 		if ( current_user_can( $capability ) ) {
-			$submenu[ $slug ][] = array( esc_attr__( 'Home', 'tradingview_alerts' ), $capability, 'admin.php?page=' . $slug . '#/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
-			$submenu[ $slug ][] = array( esc_attr__( 'Alerts', 'tradingview_alerts' ), $capability, 'admin.php?page=' . $slug . '#/jobs' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			$submenu[ $slug ][] = array( esc_attr__( 'Alerts', 'tradingview_alerts' ), $capability, 'admin.php?page=' . $slug . '#/' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+			$submenu[ $slug ][] = array( esc_attr__( 'Orders', 'tradingview_alerts' ), $capability, 'admin.php?page=' . $slug . '#/alerts' ); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 		}
 	}
 

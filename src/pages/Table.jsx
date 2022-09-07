@@ -81,8 +81,8 @@ export function StatusPill({ value }) {
       className={
         classNames(
           "px-3 py-1 uppercase leading-wide font-bold text-xs rounded-full shadow-sm",
-          status.startsWith("published") ? "bg-green-100 text-green-800" : null,
-          status.startsWith("draft") ? "bg-yellow-100 text-yellow-800" : null,
+          status.startsWith("call") ? "bg-green-100 text-green-800" : null,
+          status.startsWith("put") ? "bg-yellow-100 text-yellow-800" : null,
         )
       }
     >

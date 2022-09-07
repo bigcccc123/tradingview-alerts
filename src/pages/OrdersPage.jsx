@@ -5,14 +5,14 @@ import { __ } from '@wordpress/i18n';
 import {Routes, Route, useNavigate} from 'react-router-dom';
 import Table, { AvatarCell, SelectColumnFilter, StatusPill } from './Table';
 
-const AlertsPage = () => {
+const OrdersPage = () => {
     const navigate = useNavigate();
 
-    const url = wpApiSettings.root + 'tradingview-alerts/v1/alerts';
-    const [alerts, setAlerts] = React.useState([]);
+    const url = wpApiSettings.root + 'tradingview-orders/v1/orders';
+    const [orders, setOrders] = React.useState([]);
 
     React.useEffect(() => {
-        async function loadAlerts() {
+        async function loadOrders() {
             const response = await fetch(url, {
                 headers : {
                     'X-WP-Nonce' : wpApiSettings.nonce
@@ -24,37 +24,15 @@ const AlertsPage = () => {
                 return;
             }
     
-            const alerts = await response.json();
-            setAlerts(alerts);
+            const orders = await response.json();
+            setOrders(orders);
         }
     
-        loadAlerts();
+        loadOrders();
     }, []);
 
     const columns = React.useMemo(() => [
-        {
-          Header: "Name",
-          accessor: 'name',
-        },
-        {
-          Header: "Ticker",
-          accessor: 'ticker',
-        },
-        {
-          Header: "Type",
-          accessor: 'type',
-          Filter: SelectColumnFilter,
-          filter: 'includes',
-        },
-
-        {
-          Header: "Close",
-          accessor: 'close',
-        },
-        {
-          Header: "Created At",
-          accessor: 'created_at',
-        },
+        
       ], []);
 
     return (
@@ -63,11 +41,11 @@ const AlertsPage = () => {
             <div className="min-h-screen bg-gray-100 text-gray-900">
                 <main className="mx-auto px-4 sm:px-6 lg:px-8 pt-4">
                     <div className="">
-                    <h3 className="text-xl font-semibold">Alerts</h3>
+                    <h3 className="text-xl font-semibold">Orders</h3>
                     </div>
 
                     <div className="mt-6">
-                        <Table columns={columns} data={alerts} />
+                        Comming Soon
                     </div>
                 </main>
             </div>
@@ -76,4 +54,4 @@ const AlertsPage = () => {
     );
 };
 
-export default AlertsPage;
+export default OrdersPage;

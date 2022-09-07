@@ -40,5 +40,5 @@ class Keys {
 	 *
 	 * @since 0.0.1
 	 */
-	const ALERT_SEEDER_RAN = 'td_alert_job_seeder_ran';
+	const ALERT_SEEDER_RAN = 'td_alert_alert_seeder_ran';
 }

@@ -37,7 +37,7 @@ class Manager {
 		$this->class_map = apply_filters(
 			'td_alert_rest_api_class_map',
 			array(
-				TD_ALERT_DIR . '/includes/REST/AlertTypesController.php' => 'Dearvn\Tradingview_Alerts\REST\AlertTypesController',
+				TD_ALERT_DIR . '/includes/REST/OrdersController.php' => 'Dearvn\Tradingview_Alerts\REST\OrdersController',
 				TD_ALERT_DIR . '/includes/REST/AlertsController.php' => 'Dearvn\Tradingview_Alerts\REST\AlertsController',
 			)
 		);

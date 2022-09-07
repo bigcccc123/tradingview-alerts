@@ -14,10 +14,10 @@ import './style/tailwind.css';
 import './style/main.scss';
 
 // Render the App component into the DOM
-const jobPlaceElement = document.getElementById( 'tradingview_alerts' );
+const alertPlaceElement = document.getElementById( 'tradingview_alerts' );
 
-if (jobPlaceElement) {
-	render( < App / > , jobPlaceElement );
+if (alertPlaceElement) {
+	render( < App / > , alertPlaceElement );
 }
 
 // If you want your app to work offline and load faster, you can change

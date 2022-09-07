@@ -18,15 +18,15 @@ const NavLinks = () => {
                         to="/"
                         className="bg-[#1d2327] text-white mr-0.5 py-2.5 px-5 transition text-center hover:text-white hover:font-bold"
                     >
-                        {__('Home', 'tradingview_alerts')}
+                        {__('Alert', 'tradingview_alerts')}
                     </Link>
                 </li>
                 <li className="inline-block">
                     <Link
-                        to="/jobs"
+                        to="/orders"
                         className="bg-[#1d2327] text-white mr-0.5 py-2.5 px-5 transition text-center hover:text-white hover:font-bold"
                     >
-                        {__('Alerts', 'tradingview_alerts')}
+                        {__('Orders', 'tradingview_alerts')}
                     </Link>
                 </li>
             </ul>

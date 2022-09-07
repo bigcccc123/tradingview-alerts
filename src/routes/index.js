@@ -1,22 +1,17 @@
 /**
  * Internal dependencies
  */
-import HomePage from '../pages/HomePage';
-import AlertCreate from '../pages/AlertCreate';
 import AlertsPage from '../pages/AlertsPage';
+import OrdersPage from '../pages/OrdersPage';
 
 const routes = [
 	{
 		path: '/',
-		element: HomePage,
-	},
-	{
-		path: '/alerts',
 		element: AlertsPage,
 	},
 	{
-		path: '/jobs-create',
-		element: AlertCreate,
+		path: '/orders',
+		element: OrdersPage,
 	}
 	];
 

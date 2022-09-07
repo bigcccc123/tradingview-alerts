@@ -27,14 +27,15 @@ class AlertsMigration extends DBMigrator {
 
 		$charset_collate = $wpdb->get_charset_collate();
 
-        $schema_jobs = "CREATE TABLE IF NOT EXISTS `{$wpdb->td_alerts}` (
+        $schema_alerts = "CREATE TABLE IF NOT EXISTS `{$wpdb->td_alerts}` (
             `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
             `name` varchar(255) NOT NULL,
             `ticker` varchar(255) NOT NULL,
             `type` varchar(255) NOT NULL,
             `interval` tinyint(1) unsigned NOT NULL,
             `exchange` varchar(255) NOT NULL,
-            `time` datetime NOT NULL,
+            `close` decimal(8,2) NOT NULL,
+            `created_at` datetime NOT NULL,
             PRIMARY KEY (`id`)
         ) $charset_collate";
 

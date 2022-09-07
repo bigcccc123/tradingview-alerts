@@ -48,8 +48,7 @@ class Installer {
 		global $wpdb;
 
 		// Register the tables to wpdb global.
-		$wpdb->td_alert_job_types = $wpdb->prefix . 'td_alert_job_types';
-		$wpdb->td_alert_jobs      = $wpdb->prefix . 'td_alert_jobs';
+		$wpdb->td_alerts      = $wpdb->prefix . 'td_alerts';
 	}
 
 	/**

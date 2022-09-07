@@ -29,24 +29,25 @@ class AlertsSeeder extends DBSeeder {
 		global $wpdb;
 
 		// Check if there is already a seeder runs for this plugin.
-		$already_seeded = (bool) get_option( Keys::JOB_SEEDER_RAN, false );
+		$already_seeded = (bool) get_option( Keys::ALERT_SEEDER_RAN, false );
 		if ( $already_seeded ) {
 			return;
 		}
 
-		// Generate some jobs.
+		// Generate some alerts.
 		$alerts = array(
 			array(
 				'name'		=> 'Enter Call',
 				'type'		=> 'Buy Long',
 				'ticker'	=> 'AAPL',
 				'interval'	=> 5,
+				'close'		=> 154.20,
 				'exchange'	=> 'NASDAQ',
-				'time'		=> current_datetime()->format( 'Y-m-d H:i:s' ),
+				'created_at'		=> current_datetime()->format( 'Y-m-d H:i:s' ),
 			),
 		);
 
-		// Create each of the jobs.
+		// Create each of the alerts.
 		foreach ( $alerts as $alert ) {
 			$wpdb->insert(
 				$wpdb->prefix . 'td_alerts',

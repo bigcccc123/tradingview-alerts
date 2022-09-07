@@ -40,7 +40,7 @@ class Alert extends BaseModel {
 			'interval'	=> '',
 			'ticker'	=> '',
 			'exchange'	=> '',
-			'time'		=> ''
+			'created_at'		=> ''
 		);
 
 		$data = wp_parse_args( $data, $defaults );
@@ -53,7 +53,7 @@ class Alert extends BaseModel {
 			'exchange' => $this->sanitize( $data['exchange'], 'exchange' ),
 			'type' => $this->sanitize( $data['type'], 'type' ),
 			'interval'  => $this->sanitize( $data['interval'], 'number' ),
-			'time'  => $this->sanitize( $data['time'], 'text' )
+			'created_at'  => $this->sanitize( $data['created_at'], 'text' )
 		);
 	}
 
@@ -68,13 +68,14 @@ class Alert extends BaseModel {
 	 */
 	public static function to_array( ?object $alert ): array {
 		$data = array(
-			'id'          => (int) $alert->id,
-			'name'        => $alert->name,
-			'ticker'      => $alert->ticker,
-			'exchange'    => $alert->exchange,
-			'interval'    => $alert->interval,
-			'close'   	  => $alert->close,
-			'time'        => $alert->time,
+			'id'          	=> (int) $alert->id,
+			'name'        	=> $alert->name,
+			'ticker'      	=> $alert->ticker,
+			'type'      	=> $alert->type,
+			'exchange'    	=> $alert->exchange,
+			'interval'    	=> $alert->interval,
+			'close'   	  	=> $alert->close,
+			'created_at'	=> date('m/d/Y H:i', strtotime($alert->created_at)),
 		);
 
 		return $data;

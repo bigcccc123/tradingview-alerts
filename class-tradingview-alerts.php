@@ -158,7 +158,7 @@ final class Tradingview_Alerts {
 		 *
 		 * @since 0.0.1
 		 */
-		do_action( 'job_place_loaded' );
+		do_action( 'alert_place_loaded' );
 	}
 
 	/**
@@ -249,7 +249,7 @@ final class Tradingview_Alerts {
 		// Common classes.
 		$this->container['assets']   = new Dearvn\Tradingview_Alerts\Assets\Manager();
 		$this->container['rest_api'] = new Dearvn\Tradingview_Alerts\REST\Manager();
-		$this->container['jobs']     = new Dearvn\Tradingview_Alerts\Alerts\Manager();
+		$this->container['alerts']     = new Dearvn\Tradingview_Alerts\Alerts\Manager();
 	}
 
 	/**
@@ -336,152 +336,3 @@ function tradingview_alerts() {
  * @since 0.0.1
  */
 tradingview_alerts();
-
-
-
-
-
-
-class WDS_CLI {
-
-	/**
-	 * Returns 'Hello World'
-	 *
-	 * @since  0.0.1
-	 * @author Scott Anderson
-	 */
-	public function hello_world() {
-		//WP_CLI::line( 'Hello World!' );
-		$total = 4;
-        for ($i = 0; $i < $total; $i++) {
-            $this->migrate_data($i+1);
-        }
-		
-	}
-
-	/**
-	 * Migrate data from file.
-	 * 
-	 * @param int $i input value.
-	 * return void
-	 */
-	private function migrate_data($i) {
-
-		$content = file_get_contents('list'.$i.'.json');
-        
-        $datas = json_decode($content);
-
-		try {
-			register_taxonomy( 'location', 'realestate');
-			//register_taxonomy( 'project', 'realestate');
-
-			foreach($datas as $data) {
-				$city_slug = $data->code;
-				//$city = get_category_by_slug($city_slug);
-				$city = get_term_by( 'slug', $city_slug, 'location' );
-				if (empty($city->term_id)) {
-					$city_id = wp_insert_term($data->name, 'location', ['slug' => $city_slug, 'description' => 'city']);
-					//$city_id = wp_insert_category(['cat_name' => $data->name,'category_nicename' => $city_slug, 'taxonomy' => 'location']);
-					//update_option( "category_{$city_id}_category_type", 'City' );
-				} else {
-					$city_id = $city->term_id;
-					wp_update_term($city_id, 'location', ['description' => 'city']);
-						
-					//$city_id = $city->cat_ID;
-					//wp_update_category(['cat_ID' => $city->cat_ID, 'cat_name' => $data->name,'category_nicename' => $city_slug, 'taxonomy' => 'location']);
-				}
-
-				$districts = $data->district;
-				$projects = [];
-				foreach($districts as $item) {
-					$dist_slug = sanitize_title($item->pre.' '.$item->name).'-'.$city_slug;
-					$dist = get_term_by( 'slug', $dist_slug, 'location' );
-					//print_r($dist);
-					//$dist = get_category_by_slug($dist_slug);
-					if (empty($dist->term_id)) {
-						$dist_id = wp_insert_term($item->pre.' '.$item->name, 'location', ['slug' => $dist_slug, 'parent' => $city_id, 'description' => 'district']);
-						//$dist_id = wp_insert_category(['cat_name' => $item->pre.' '.$item->name,'category_nicename' => $dist_slug, 'category_parent' => $city_id, 'taxonomy' => 'district']);
-					} else {
-						$dist_id = $dist->term_id;
-						wp_update_term($dist_id, 'location', ['parent' => $city_id, 'description' => 'district']);
-						//$dist_id = $dist->cat_ID;
-						//wp_update_category(['cat_ID' => $dist->cat_ID, 'cat_name' => $item->pre.' '.$item->name,'category_nicename' => $dist_slug, 'category_parent' => $city_id, 'taxonomy' => 'district']);
-					}
-
-					
-					
-					$wards = $item->ward;
-					foreach($wards as $itm) {
-						$ward_slug = sanitize_title($itm->pre.' '.$itm->name).'-'.sanitize_title($item->pre.' '.$item->name);
-						$ward = get_term_by( 'slug', $ward_slug, 'location' );
-						//print_r($ward);
-						//$ward = get_category_by_slug($ward_slug);
-						if (empty($ward->term_id)) {
-							$ward_id = wp_insert_term($itm->pre.' '.$itm->name, 'location', ['slug' => $ward_slug, 'parent' => $dist_id, 'description' => 'ward']);
-							//$ward_id = wp_insert_category(['cat_name' => $itm->pre.' '.$itm->name,'category_nicename' => $ward_slug, 'category_parent' => $dist_id, 'taxonomy' => 'ward']);
-						} else {
-							$ward_id = $ward->term_id;
-							wp_update_term($ward_id, 'location', ['parent' => $dist_id, 'description' => 'ward']);
-						
-							//$ward_id = $ward->cat_ID;
-							//wp_update_category(['cat_ID' => $ward->cat_ID, 'cat_name' => $itm->pre.' '.$itm->name,'category_nicename' => $ward_slug, 'category_parent' => $dist_id, 'taxonomy' => 'ward']);
-						}
-					}
-					
-					$streets = $item->street;
-					foreach($streets as $itm) {
-						$street_slug = sanitize_title($itm->pre.' '.$itm->name).'-'.sanitize_title($item->pre.' '.$item->name);
-						$street = get_term_by( 'slug', $street_slug, 'location' );
-						//print_r($street);
-						//$street = get_category_by_slug($street_slug);
-						if (empty($street->term_id)) {
-							$street_id = wp_insert_term($itm->pre.' '.$itm->name, 'location', ['slug' => $street_slug, 'parent' => $dist_id, 'description' => 'street']);
-							//$street = wp_insert_category(['cat_name' => $itm->pre.' '.$itm->name,'category_nicename' => $street_slug, 'category_parent' => $dist_id, 'taxonomy' => 'street']);
-						} else {
-							$street_id = $street->term_id;
-							wp_update_term($street_id, 'location', ['parent' => $dist_id, 'description' => 'street']);
-						
-							//$street_id = $street->cat_ID;
-							//wp_update_category(['cat_ID' => $street->cat_ID, 'cat_name' => $itm->pre.' '.$itm->name,'category_nicename' => $street_slug, 'category_parent' => $dist_id, 'taxonomy' => 'street']);
-						}
-					}
-					
-					
-					$projects[] = [
-						'dist_id' => $dist_id,
-						'dist_slug' => $dist_slug,
-						'projects' => $item->project
-					];
-				}
-
-
-
-				register_taxonomy( 'project', 'realestate');
-				foreach($projects as $item) {
-					foreach($item['projects'] as $itm) {
-						$project_slug = sanitize_title($itm->name).'-'.$item['dist_slug'];
-						$project = get_term_by( 'slug', $project_slug, 'project' );
-						
-						if (empty($project->term_id)) {
-							$project_id = wp_insert_term($itm->name, 'project', ['slug' => $project_slug, 'parent' => $item['dist_id']]);
-							print_r($project_id);
-						} else {
-							$project_id = $project->term_id;
-							wp_update_term($project_id, 'project', ['parent' => $item['dist_id']]);
-						}
-					}
-				}
-
-			}
-		} catch (\Exception $e) {
-			echo $e->getMessage();
-		}
-	}
-
-}
-
-function wds_cli_register_commands() {
-	WP_CLI::add_command( 'wds', 'WDS_CLI' );
-}
-
-add_action( 'cli_init', 'wds_cli_register_commands' );

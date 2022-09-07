@@ -30,7 +30,7 @@ class Manager {
 	}
 
 	/**
-	 * Get all jobs by criteria.
+	 * Get all alerts by criteria.
 	 *
 	 * @since 0.0.1
 	 *
@@ -99,11 +99,11 @@ class Manager {
 	 */
 	public function create( $data ) {
 		// Prepare alert data for database-insertion.
-		$job_data = $this->alert->prepare_for_database( $data );
+		$alert_data = $this->alert->prepare_for_database( $data );
 
 		// Create alert now.
-		$job_id = $this->alert->create(
-			$job_data,
+		$alert_id = $this->alert->create(
+			$alert_data,
 			array(
 				'%s',
 				'%s',
@@ -117,8 +117,8 @@ class Manager {
 			)
 		);
 
-		if ( ! $job_id ) {
-			return new \WP_Error( 'td_alert_job_create_failed', __( 'Failed to create alert.', 'tradingview_alerts' ) );
+		if ( ! $alert_id ) {
+			return new \WP_Error( 'td_alert_alert_create_failed', __( 'Failed to create alert.', 'tradingview_alerts' ) );
 		}
 
 		/**
@@ -126,12 +126,12 @@ class Manager {
 		 *
 		 * @since 0.0.1
 		 *
-		 * @param int   $job_id
-		 * @param array $job_data
+		 * @param int   $alert_id
+		 * @param array $alert_data
 		 */
-		do_action( 'td_alert_jobs_created', $job_id, $job_data );
+		do_action( 'td_alert_alerts_created', $alert_id, $alert_data );
 
-		return $job_id;
+		return $alert_id;
 	}
 
 	/**
@@ -140,19 +140,19 @@ class Manager {
 	 * @since 0.0.1
 	 *
 	 * @param array $data input value.
-	 * @param int   $job_id input value.
+	 * @param int   $alert_id input value.
 	 *
 	 * @return int | WP_Error $id
 	 */
-	public function update( array $data, int $job_id ) {
+	public function update( array $data, int $alert_id ) {
 		// Prepare alert data for database-insertion.
-		$job_data = $this->alert->prepare_for_database( $data );
+		$alert_data = $this->alert->prepare_for_database( $data );
 
 		// Update alert.
 		$updated = $this->alert->update(
-			$job_data,
+			$alert_data,
 			array(
-				'id' => $job_id,
+				'id' => $alert_id,
 			),
 			array(
 				'%s',
@@ -171,7 +171,7 @@ class Manager {
 		);
 
 		if ( ! $updated ) {
-			return new \WP_Error( 'td_alert_job_update_failed', __( 'Failed to update alert.', 'tradingview_alerts' ) );
+			return new \WP_Error( 'td_alert_alert_update_failed', __( 'Failed to update alert.', 'tradingview_alerts' ) );
 		}
 
 		if ( $updated >= 0 ) {
@@ -180,41 +180,41 @@ class Manager {
 			 *
 			 * @since 0.0.1
 			 *
-			 * @param int   $job_id
-			 * @param array $job_data
+			 * @param int   $alert_id
+			 * @param array $alert_data
 			 */
-			do_action( 'td_alert_jobs_updated', $job_id, $job_data );
+			do_action( 'td_alert_alerts_updated', $alert_id, $alert_data );
 
-			return $job_id;
+			return $alert_id;
 		}
 
-		return new \WP_Error( 'td_alert_job_update_failed', __( 'Failed to update the alert.', 'tradingview_alerts' ) );
+		return new \WP_Error( 'td_alert_alert_update_failed', __( 'Failed to update the alert.', 'tradingview_alerts' ) );
 	}
 
 	/**
-	 * Delete jobs data.
+	 * Delete alerts data.
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param array|int $job_ids input value.
+	 * @param array|int $alert_ids input value.
 	 *
 	 * @return int|WP_Error Return number or error.
 	 */
-	public function delete( $job_ids ) {
-		if ( is_array( $job_ids ) ) {
-			$job_ids = array_map( 'absint', $job_ids );
+	public function delete( $alert_ids ) {
+		if ( is_array( $alert_ids ) ) {
+			$alert_ids = array_map( 'absint', $alert_ids );
 		} else {
-			$job_ids = array( absint( $job_ids ) );
+			$alert_ids = array( absint( $alert_ids ) );
 		}
 
 		try {
 			$this->alert->query( 'START TRANSACTION' );
 
 			$total_deleted = 0;
-			foreach ( $job_ids as $job_id ) {
+			foreach ( $alert_ids as $alert_id ) {
 				$deleted = $this->alert->delete(
 					array(
-						'id' => $job_id,
+						'id' => $alert_id,
 					),
 					array(
 						'%d',
@@ -230,9 +230,9 @@ class Manager {
 				 *
 				 * @since 0.0.1
 				 *
-				 * @param int $job_id
+				 * @param int $alert_id
 				 */
-				do_action( 'td_alert_job_deleted', $job_id );
+				do_action( 'td_alert_alert_deleted', $alert_id );
 			}
 
 			$this->alert->query( 'COMMIT' );
