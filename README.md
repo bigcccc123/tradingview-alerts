@@ -1,5 +1,5 @@
 # Usage
-**This plugin to receive alert signs from Trandingview**
+**This plugin to receive alert signals from Trandingview**
 
 ![Alt text](https://github.com/dearvn/tradingview-alerts/raw/main/alerts.png?raw=true "alerts")
 
