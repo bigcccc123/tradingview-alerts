@@ -39,11 +39,11 @@ Where, `/wpex` is the project root folder inside `/htdocs`.
 Or, it could be your custom processed URL.
 
 ### Version & Changelogs
-**v0.0.1 - 02/08/2022**
+**v0.0.1 - 07/09/2022**
 
 1. Necessary traits to handle - sanitization, query.
 1. Advanced setup for migration, seeder, REST API.
-1. Alerts, Alert Types REST API developed.
+1. Alerts REST API developed.
 
 ### PHP Coding Standards - PHPCS
 
