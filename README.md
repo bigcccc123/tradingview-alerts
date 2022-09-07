@@ -1,7 +1,13 @@
 # Usage
-This plugin to receive alert signs from Trandingview
+**This plugin to receive alert signs from Trandingview**
 
 ![Alt text](https://github.com/dearvn/tradingview-alerts/raw/main/alerts.png?raw=true "alerts")
+
+
+**Setup Alert Webhook from TradingView**
+
+![Alt text](https://github.com/dearvn/tradingview-alerts/raw/main/alert.png?raw=true "alerts")
+
 
 # Wordpress and React
 A simple plugin to work in WordPress with WP-script, React, React Router, Tailwind CSS, PostCSS, Eslint, i18n, PHP OOP plugin architecture easily in a minute.
