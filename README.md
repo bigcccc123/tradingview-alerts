@@ -74,7 +74,7 @@ vendor/bin/phpcbf tradingview-alerts.php
 
 ### Setup webhook alert
 ***Url Webhook**
-```https://[your domain]/alert-post```
+```https://[your domain]/tradingview-alerts/v1/alert-post```
 
 **CALL**
 ```sh
