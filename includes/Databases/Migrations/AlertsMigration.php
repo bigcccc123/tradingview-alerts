@@ -32,8 +32,8 @@ class AlertsMigration extends DBMigrator {
             `name` varchar(255) NOT NULL,
             `ticker` varchar(255) NOT NULL,
             `type` varchar(255) NOT NULL,
-            `interval` tinyint(1) unsigned NOT NULL,
             `exchange` varchar(255) NOT NULL,
+            `interval` tinyint(1) unsigned NOT NULL,
             `close` decimal(8,2) NOT NULL,
             `created_at` datetime NOT NULL,
             PRIMARY KEY (`id`)

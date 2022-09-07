@@ -42,7 +42,7 @@ class AlertsController extends RESTController {
 				array(
 					'methods'             => WP_REST_Server::READABLE,
 					'callback'            => array( $this, 'get_items' ),
-					'permission_callback' => array( $this, 'check_permission' ),
+					'permission_callback' => '__return_true',
 					'args'                => $this->get_collection_params(),
 					'schema'              => array( $this, 'get_item_schema' ),
 				),
@@ -77,12 +77,12 @@ class AlertsController extends RESTController {
 					'permission_callback' => array( $this, 'check_permission' ),
 					'args'                => $this->get_collection_params(),
 				),
-				array(
+				/*array(
 					'methods'             => WP_REST_Server::EDITABLE,
 					'callback'            => array( $this, 'update_item' ),
 					'permission_callback' => array( $this, 'check_permission' ),
 					'args'                => $this->get_endpoint_args_for_item_schema( WP_REST_Server::EDITABLE ),
-				),
+				),*/
 			)
 		);
 	}
@@ -166,16 +166,16 @@ class AlertsController extends RESTController {
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function create_item( $request ) {
+
 		if ( ! empty( $request['id'] ) ) {
 			return new WP_Error(
-				'td_alert_rest_email_template_exists',
-				__( 'Cannot create existing email template.', 'tradingview_alerts' ),
+				'td_alert_rest_alert_error',
+				__( 'Cannot create alert.', 'tradingview_alerts' ),
 				array( 'status' => 400 )
 			);
 		}
 
 		$prepared_data = $this->prepare_item_for_database( $request );
-
 
 		if ( is_wp_error( $prepared_data ) ) {
 			return $prepared_data;
@@ -217,7 +217,7 @@ class AlertsController extends RESTController {
 	public function update_item( $request ) {
 		if ( empty( $request['id'] ) ) {
 			return new WP_Error(
-				'td_alert_rest_email_template_exists',
+				'td_alert_rest_alert_error',
 				__( 'Invalid Alert ID.', 'tradingview_alerts' ),
 				array( 'status' => 400 )
 			);
@@ -307,8 +307,8 @@ class AlertsController extends RESTController {
 					'context'     => array( 'view', 'edit' ),
 					'readonly'    => true,
 				),
-				'title'       => array(
-					'description' => __( 'Alert title', 'tradingview_alerts' ),
+				'name'       => array(
+					'description' => __( 'Alert Name', 'tradingview_alerts' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
@@ -317,63 +317,44 @@ class AlertsController extends RESTController {
 						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
-				'slug'        => array(
-					'description' => __( 'Alert slug', 'tradingview_alerts' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-					'minLength'   => 1,
-					'arg_options' => array(
-						'sanitize_callback' => array( $this, 'sanitize_alert_slug' ),
-					),
-				),
-				'description' => array(
-					'description' => __( 'Alert description', 'tradingview_alerts' ),
+				'ticker'       => array(
+					'description' => __( 'Ticker', 'tradingview_alerts' ),
 					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
 					'minLength'   => 1,
+					'arg_options' => array(
+						'sanitize_callback' => 'sanitize_text_field',
+					),
 				),
-				'alert_type_id' => array(
-					'description' => __( 'Alert type', 'tradingview_alerts' ),
-					'type'        => 'integer',
+				'type'       => array(
+					'description' => __( 'Type', 'tradingview_alerts' ),
+					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
+					'minLength'   => 1,
 					'arg_options' => array(
-						'sanitize_callback' => 'absint',
+						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
-				'company_id'  => array(
-					'description' => __( 'Company', 'tradingview_alerts' ),
-					'type'        => 'integer',
+				'exchange'       => array(
+					'description' => __( 'Exchange', 'tradingview_alerts' ),
+					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
+					'minLength'   => 1,
 					'arg_options' => array(
-						'sanitize_callback' => 'absint',
+						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
-				'is_active'   => array(
-					'description' => __( 'Alert status', 'tradingview_alerts' ),
-					'type'        => 'boolean',
+				'close'       => array(
+					'description' => __( 'Close', 'tradingview_alerts' ),
+					'type'        => 'string',
 					'context'     => array( 'view', 'edit' ),
 					'required'    => true,
+					'minLength'   => 1,
 					'arg_options' => array(
-						'sanitize_callback' => 'absint',
-					),
-				),
-				'created_by'  => array(
-					'description' => __( 'Created by user', 'tradingview_alerts' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit' ),
-					'arg_options' => array(
-						'sanitize_callback' => 'absint',
-					),
-				),
-				'updated_by'  => array(
-					'description' => __( 'Updated by user', 'tradingview_alerts' ),
-					'type'        => 'integer',
-					'context'     => array( 'view', 'edit' ),
-					'arg_options' => array(
-						'sanitize_callback' => 'absint',
+						'sanitize_callback' => 'sanitize_text_field',
 					),
 				),
 				'created_at'  => array(
@@ -382,21 +363,7 @@ class AlertsController extends RESTController {
 					'context'     => array( 'view', 'edit' ),
 					'format'      => 'date-time',
 					'readonly'    => true,
-				),
-				'updated_at'  => array(
-					'description' => __( 'Updated at time', 'tradingview_alerts' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-					'format'      => 'date-time',
-					'readonly'    => true,
-				),
-				'deleted_at'  => array(
-					'description' => __( 'Deleted at time', 'tradingview_alerts' ),
-					'type'        => 'string',
-					'context'     => array( 'view', 'edit' ),
-					'format'      => 'date-time',
-					'readonly'    => true,
-				),
+				)
 			),
 		);
 
@@ -415,20 +382,22 @@ class AlertsController extends RESTController {
 	 * @return object|WP_Error
 	 */
 	protected function prepare_item_for_database( $request ) {
-		$data                = array();
-		$data['title']       = $request['title'];
-		$data['slug']        = $this->generate_unique_slug( $request );
-		$data['description'] = $request['description'];
-		$data['company_id']  = $request['company_id'];
-		$data['is_active']   = $request['is_active'];
-		$data['alert_type_id'] = $request['alert_type_id'];
 
-		if ( empty( $request['id'] ) ) {
-			$data['created_by'] = empty( $request['created_by'] ) ? get_current_user_id() : absint( $request['created_by'] );
-			$data['created_at'] = empty( $request['created_at'] ) ? current_datetime()->format( 'Y-m-d H:i:s' ) : $request['created_at'];
-		} else {
-			$data['updated_by'] = empty( $request['updated_by'] ) ? get_current_user_id() : absint( $request['updated_by'] );
-			$data['updated_at'] = empty( $request['updated_at'] ) ? current_datetime()->format( 'Y-m-d H:i:s' ) : $request['updated_at'];
+		$data				= array();
+		$data['name']		= $request['name'];
+		$data['ticker']		= $request['ticker'];
+		$data['type']		= $request['type'];
+		$data['exchange']	= $request['exchange'];
+		$data['interval']	= $request['interval'];
+		$data['close']		= $request['close'];
+		
+		if (!empty($request['time'])) {
+            $tz_local = new \DateTimeZone(get_option('gmt_offset'));
+            $date = new \DateTime($request['time']);
+            $date->setTimezone($tz_local);
+            $data['created_at'] = $date->format("Y-m-d H:i:s");
+        } else {
+			$data['created_at']	= current_datetime()->format( 'Y-m-d H:i:s' );
 		}
 
 		return $data;
