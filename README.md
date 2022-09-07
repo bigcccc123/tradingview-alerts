@@ -1,5 +1,8 @@
-# wp-react-kit
-A simple starter kit to work in WordPress with WP-script, React, React Router, Tailwind CSS, PostCSS, Eslint, i18n, PHP OOP plugin architecture easily in a minute.
+# Usage
+This plugin to receive alert signs from Trandingview
+
+# Wordpress and React
+A simple plugin to work in WordPress with WP-script, React, React Router, Tailwind CSS, PostCSS, Eslint, i18n, PHP OOP plugin architecture easily in a minute.
 
 ----
 
